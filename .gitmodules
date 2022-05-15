@@ -1,0 +1,3 @@
+[submodule "docker-brave-browser"]
+	path = docker-brave-browser
+	url = git@github.com:seanthchao/docker-brave-browser.git
