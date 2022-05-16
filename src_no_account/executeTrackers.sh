@@ -8,7 +8,7 @@ do
     # ln -fP /home/sean/etoro/etoro_api/etoro-api/drivers/ubuntu/chromedriver /home/sean/etoro/etoro-api/drivers/ubuntu/chromedriver_"$i"
     # ln -fP /home/sean/etoro/etoro_api/etoro-api/python/drivers/ubuntu/chromedriver /home/sean/etoro/etoro-api_no_account/drivers/ubuntu/chromedriver_"$i"
     java_"$i" -jar ../etoro-api/src_no_account/build/libs/etoro-api-0.1.4."$i".jar &
-    sleep 10s
+    sleep 20s
 done
 #java -jar build/libs/etoro-api-0.1.4.8087.jar
 # java -jar build/libs/etoro-api-0.1.4.8088.jar

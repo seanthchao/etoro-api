@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "ok.work"
-version = "0.1.4.8124"
+version = "0.1.4.8130"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {

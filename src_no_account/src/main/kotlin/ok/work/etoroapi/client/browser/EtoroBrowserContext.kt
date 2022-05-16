@@ -4,6 +4,7 @@ import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.WebElement
+import org.openqa.selenium.remote.DesiredCapabilities
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.lang.RuntimeException
@@ -22,6 +23,7 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
     private lateinit var expirationTime: Date
     private lateinit var driver: ChromeDriver
     private lateinit var opts: ChromeOptions
+    private lateinit var capabilities: DesiredCapabilities
     private lateinit var realCid: String
     private lateinit var demoCid: String
     private lateinit var deviceid: String
@@ -39,24 +41,38 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
             }
             else -> {
               /* "drivers/ubuntu/brave/chromedriver_99" */
-              "drivers/ubuntu/chromedriver_${port}"
+              "bin/chromedriver_${port}"
+              /* "drivers/ubuntu/chromedriver_${port}" */
                 /* "drivers/ubuntu/chromedriver" */
             }
         }
-        var prefs = HashMap<String, Int>()
+        var prefs = HashMap<String, Any>()
+        /* var prefs_cap = HashMap<String, Any>() */
         opts = ChromeOptions()
+        opts.setExperimentalOption("debuggerAddress", "127.0.0.1:9224")
         System.setProperty("webdriver.chrome.driver", pathToDriver)
-        opts.addArguments("start-maximized")
-        opts.addArguments("--no-sandbox")
-        opts.addArguments("--disable-dev-shm-usage")
-        opts.addArguments("--disable-blink-features=AutomationControlled")
-        opts.addArguments("disable-infobars")
+        /* opts.addArguments("start-maximized")
+        opts.addArguments("--incognito") */
+        /* opts.addArguments("--no-sandbox") */
+        /* opts.addArguments("--disable-dev-shm-usage") */
+        /* opts.addArguments("--disable-blink-features=AutomationControlled")
+        opts.setExperimentalOption("excludeSwitches",Collections.singletonList("enable-automation")) */
+        /* opts.addArguments("disable-infobars") */
         /* opts.addArguments("--disable-extensions") */
         /* opts.setBinary("/usr/bin/brave-browser") */
-        opts.setBinary("/opt/brave.com/brave/brave_${port}")
+        /* opts.setBinary("/opt/brave.com/brave/brave") */
         /* opts.setBinary("/opt/google/chrome/chrome_${port}") */
-        prefs.put("profile.managed_default_content_settings.images", 2)
-        opts.setExperimentalOption("prefs", prefs)
+        /* prefs.put("profile.managed_default_content_settings.images", 2)
+
+        opts.setCapability( "browser.startup.page", 1 )
+        opts.setCapability( "browser.startup.homepage", "https://www.google.com" )
+        opts.setExperimentalOption("prefs", prefs) */
+        /* opts.setCapability("prefs", prefs) */
+        /* var capabilities = DesiredCapabilities() */
+        /* capabilities.setCapability(ChromeOptions.CAPABILITY, opts) */
+
+
+        /* WebDriver driver = new ChromeDriver(capabilities); */
         login()
 
     }
@@ -89,7 +105,7 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
         driver.findElementById("username").sendKeys(email)
         driver.findElementById("password").sendKeys(password)
         driver.findElementByClassName("blue-btn").click() */
-        driver.get("https://www.etoro.com/markets/btc")
+        /* driver.get("https://www.etoro.com/markets/btc") */
         Thread.sleep(1000)
         /* var seconds = 0
         while (true) {

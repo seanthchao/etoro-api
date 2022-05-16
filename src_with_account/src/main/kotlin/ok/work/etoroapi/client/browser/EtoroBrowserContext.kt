@@ -5,12 +5,16 @@ import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.WebElement
+import org.openqa.selenium.remote.DesiredCapabilities
+import org.openqa.selenium.remote.RemoteWebDriver
+
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.lang.RuntimeException
 import java.util.*
 import javax.annotation.PostConstruct
+
 
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -57,17 +61,21 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
         var prefs = HashMap<String, Int>()
         opts = ChromeOptions()
         System.setProperty("webdriver.chrome.driver", pathToDriver)
-        opts.addArguments("start-maximized")
-        opts.addArguments("--no-sandbox")
+        opts.setExperimentalOption("debuggerAddress", "127.0.0.1:9222")
+        /* opts.addArguments("start-maximized") */
+        /* opts.addArguments("--no-sandbox")
         opts.addArguments("--disable-dev-shm-usage")
         opts.addArguments("--disable-blink-features=AutomationControlled")
-        opts.addArguments("disable-infobars")
+        opts.addArguments("disable-infobars") */
         /* opts.addArguments("--disable-extensions") */
         /* opts.setBinary("/opt/brave.com/brave/brave") */
         /* opts.setBinary("/opt/brave.com/brave/brave_${port}") */
         /* opts.setBinary("/opt/google/chrome/chrome_${port}") */
-        prefs.put("profile.managed_default_content_settings.images", 2)
-        opts.setExperimentalOption("prefs", prefs)
+        /* prefs.put("profile.managed_default_content_settings.images", 2) */
+        /* opts.setExperimentalOption("useAutomationExtension", false) */
+        /* opts.setExperimentalOption("excludeSwitches",Collections.singletonList("enable-automation")) */
+        /* prefs.put("useAutomationExtension", 0) */
+        /* opts.setExperimentalOption("prefs", prefs) */
         login()
         /* println("Test Logout")
         logout()
@@ -101,7 +109,7 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
 
 
         driver.get("$baseUrl/login")
-        Thread.sleep(5000)
+        /* Thread.sleep(5000)
         val email = System.getenv("LOGIN")
         val password = System.getenv("PASSWORD")
         if (email == null || password == null) {
@@ -112,7 +120,7 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
         }
         driver.findElementById("password").sendKeys(password)
         driver.findElementByClassName("blue-btn").click()
-        Thread.sleep(12000)
+        Thread.sleep(12000) */
         var seconds = 0
         while (true) {
             try {
