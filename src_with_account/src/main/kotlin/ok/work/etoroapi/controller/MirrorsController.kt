@@ -5,6 +5,7 @@ import ok.work.etoroapi.client.EtoroPosition
 import ok.work.etoroapi.model.Mirror
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import ok.work.etoroapi.model.ofString
 
 
 @RestController
@@ -24,9 +25,13 @@ class MirrorsController {
         return httpClient.getMirrorPositions(mode, mirror_id)
     }
 
+    @GetMapping("/history")
+    fun getMirrorHistory(@RequestParam(required = true) mirror_id: String): List<EtoroPosition> {
+        return httpClient.getMirrorHistory(mirror_id)
+    }
+
     @PutMapping("/watch")
     fun watchMirroredAssets(@RequestHeader(defaultValue = "Demo") mode: String): Int {
         return httpClient.watchMirroredAssets(mode)
     }
 }
-

@@ -134,6 +134,34 @@ class BrowserHttpClient {
         return driver.executeScript(req) as String
     }
 
+    fun fetchDemoMirrorHistory(cid: String): String {
+        val driver = metadataService.getDriver()
+        val metadata = metadataService.getMetadata()
+        val req = "return JSON.stringify(await (await fetch(\"https://www.etoro.com/sapi/trade-data-demo/history/private/mirrors/$cid?ItemsPerPage=30&MirrorID=$cid&PageNumber=1&client_request_id=${userContext.requestId}\", {\n" +
+                "  \"headers\": {\n" +
+                "    \"accept\": \"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9\",\n" +
+                "    \"accept-language\": \"en-GB,en-US;q=0.9,en;q=0.8\",\n" +
+                "    \"accounttype\": \"Demo\",\n" +
+                "    \"applicationidentifier\": \"ReToro\",\n" +
+                "    \"applicationversion\": \"332.0.5\",\n" +
+                "    \"authorization\": \"${metadata.token}\",\n" +
+                "    \"sec-ch-ua\": \"\\\" Not;A Brand\\\";v=\\\"99\\\", \\\"Google Chrome\\\";v=\\\"91\\\", \\\"Chromium\\\";v=\\\"91\\\"\",\n" +
+                "    \"sec-ch-ua-mobile\": \"?0\",\n" +
+                "    \"sec-fetch-dest\": \"empty\",\n" +
+                "    \"sec-fetch-mode\": \"cors\",\n" +
+                "    \"sec-fetch-site\": \"same-origin\",\n" +
+                "    \"x-csrf-token\": \"${metadata.cToken}\"\n" +
+                "  },\n" +
+                "  \"referrer\": \"https://www.etoro.com/portfolio/history\",\n" +
+                "  \"referrerPolicy\": \"strict-origin-when-cross-origin\",\n" +
+                "  \"body\": null,\n" +
+                "  \"method\": \"GET\",\n" +
+                "  \"mode\": \"cors\",\n" +
+                "  \"credentials\": \"include\"\n" +
+                "})).json());"
+        return driver.executeScript(req) as String
+    }
+
     fun fetchLiveProfolioDetail(cid: String, instrumentID: String): String {
         val driver = metadataService.getDriver()
         val metadata = metadataService.getMetadata()

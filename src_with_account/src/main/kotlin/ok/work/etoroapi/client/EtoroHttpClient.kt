@@ -303,6 +303,18 @@ class EtoroHttpClient {
         return mapper.readValue(response)
     }
 
+    fun getMirrorHistory(
+            cid: String): List<EtoroPosition> {
+
+        val response = JSONObject(browserHttpClient.fetchDemoMirrorHistory(cid))
+                .getJSONArray("HistoryPositions")
+                .toString()
+
+        val mapper = jacksonObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .configure(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES, false)
+        return mapper.readValue(response)
+    }
+
     fun getExpireTime(): String {
       var metaData = metadataService.getMetadata()
       return metaData.expirationTime.toString()
