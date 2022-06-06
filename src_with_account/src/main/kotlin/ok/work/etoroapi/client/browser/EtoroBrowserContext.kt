@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.remote.DesiredCapabilities
 import org.openqa.selenium.remote.RemoteWebDriver
+import org.openqa.selenium.By
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.beans.factory.annotation.Autowired
@@ -109,7 +110,7 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
 
 
         driver.get("$baseUrl/login")
-        /* Thread.sleep(5000)
+        Thread.sleep(5000)
         val email = System.getenv("LOGIN")
         val password = System.getenv("PASSWORD")
         if (email == null || password == null) {
@@ -119,8 +120,14 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
           driver.findElementById("username").sendKeys(email)
         }
         driver.findElementById("password").sendKeys(password)
-        driver.findElementByClassName("blue-btn").click()
-        Thread.sleep(12000) */
+        /* driver.findElement(By.cssSelector("button[class='button-default blue-btn']")).click()
+        Thread.sleep(5000) */
+        /* driver.findElement(By.cssSelector("button[class='button-default blue-btn']")).click() */
+        driver.executeScript("document.getElementsByClassName(\"button-default blue-btn\")[0].click()")
+        Thread.sleep(5000)
+
+        /* driver.findElementByClassName("button-default.blue-btn").click() */
+        /* driver.findElementByClassName("blue-btn").click() */
         var seconds = 0
         while (true) {
             try {
@@ -184,14 +191,14 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
         expirationTime = Date(long_Time)
         /* expirationTime -= Period.ofHours(23) */
         /* expirationTime -= Period.ofMinutes(59) */
-        /* println("test expiretime: $expirationTime") */
+        println("test expiretime: $expirationTime")
         /* var diffInMillies = */
         if (Date().after(expirationTime)) {
             println("expired, logout...")
             logout()
+            Thread.sleep(5000)
             println("login...")
             login()
-            /* Thread.sleep(10000) */
         }
         return EtoroMetadata(
                 cookies,
