@@ -1,0 +1,44 @@
+version: '2.3' # volumes long syntax
+
+# options to share host's x-server:
+# - Xephyr
+# - pass $XAUTHORITY (insecure, https://stackoverflow.com/a/25280523/5894777)
+# - xhost + (horribly insecure)
+
+volumes:
+  home:
+
+services:
+  browser:
+    build: .
+    image: docker.io/fphammerle/brave-browser
+    container_name: brave_browser
+    init: true
+    environment:
+    - DISPLAY
+    read_only: true
+    volumes:
+    - type: bind
+      source: /tmp/.X11-unix
+      target: /tmp/.X11-unix
+    - type: volume
+      source: home
+      target: /home/browser
+    - type: tmpfs
+      # > ERROR:chrome_browser_main.cc(1254)] Failed to create a ProcessSingleton for your profile directory. [...]
+      target: /tmp
+      tmpfs:
+        # nosuid,nodev,noexec added by default
+        mode: '1777'
+        size: 4k
+    # fix some "Aw, Snap!" errors (including video playback)
+    # > ERROR:broker_posix.cc(46)] Received unexpected number of handles
+    # default:
+    # > $ sudo docker exec brave_browser mount | grep /dev/shm
+    # > shm on /dev/shm type tmpfs (rw,nosuid,nodev,noexec,relatime,size=65536k)
+    # https://github.com/puppeteer/puppeteer/blob/v7.1.0/docs/troubleshooting.md#tips
+    shm_size: 1GB
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges]
+
+# https://docs.docker.com/compose/compose-file/compose-file-v2/

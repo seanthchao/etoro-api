@@ -54,15 +54,15 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
                 "drivers/windows/chromedriver.exe"
             }
             else -> {
-              "drivers/ubuntu/brave/chromedriver_101"
-              /* "drivers/ubuntu/chromedriver_${port}" */
+              /* "drivers/ubuntu/brave/chromedriver_101" */
+              "/bin/chromedriver_${port}"
                 /* "drivers/ubuntu/chromedriver" */
             }
         }
         var prefs = HashMap<String, Int>()
         opts = ChromeOptions()
         System.setProperty("webdriver.chrome.driver", pathToDriver)
-        opts.setExperimentalOption("debuggerAddress", "127.0.0.1:9222")
+        opts.setExperimentalOption("debuggerAddress", "127.0.0.1:9224")
         /* opts.addArguments("start-maximized") */
         /* opts.addArguments("--no-sandbox")
         opts.addArguments("--disable-dev-shm-usage")
@@ -77,6 +77,9 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
         /* opts.setExperimentalOption("excludeSwitches",Collections.singletonList("enable-automation")) */
         /* prefs.put("useAutomationExtension", 0) */
         /* opts.setExperimentalOption("prefs", prefs) */
+        println("Wait...")
+        Thread.sleep(30000)
+
         login()
         /* println("Test Logout")
         logout()
@@ -109,7 +112,7 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
         }
 
 
-        driver.get("$baseUrl/login")
+        /* driver.get("$baseUrl/login")
         Thread.sleep(5000)
         val email = System.getenv("LOGIN")
         val password = System.getenv("PASSWORD")
@@ -119,11 +122,11 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
         if (deviceExsist == "0"){
           driver.findElementById("username").sendKeys(email)
         }
-        driver.findElementById("password").sendKeys(password)
+        driver.findElementById("password").senHdKeys(password) */
         /* driver.findElement(By.cssSelector("button[class='button-default blue-btn']")).click()
         Thread.sleep(5000) */
         /* driver.findElement(By.cssSelector("button[class='button-default blue-btn']")).click() */
-        driver.executeScript("document.getElementsByClassName(\"button-default blue-btn\")[0].click()")
+        /* driver.executeScript("document.getElementsByClassName(\"button-default blue-btn\")[0].click()") */
         Thread.sleep(5000)
 
         /* driver.findElementByClassName("button-default.blue-btn").click() */

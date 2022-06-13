@@ -118,9 +118,9 @@ class Watchlist {
                 .configure(MapperFeature.USE_STD_BEAN_NAMING, true)
         var file = File(SAVED_LIST_PATH)
         if (!file.exists()) {
-            file.createNewFile()
+            /* file.createNewFile() */
         }
-        mapper.writeValue(File(SAVED_LIST_PATH), watchlist)
+        /* mapper.writeValue(File(SAVED_LIST_PATH), watchlist) */
     }
 
     private fun saveAssetMaps() {
@@ -129,15 +129,15 @@ class Watchlist {
                 .configure(MapperFeature.USE_STD_BEAN_NAMING, true)
         var file = File(SAVED_ASSETID_LIST_PATH)
         if (!file.exists()) {
-            file.createNewFile()
+            /* file.createNewFile() */
         }
-        mapper.writeValue(File(SAVED_ASSETID_LIST_PATH), assetsMapIDs)
+        /* mapper.writeValue(File(SAVED_ASSETID_LIST_PATH), assetsMapIDs) */
 
         file = File(SAVED_ASSETNAME_LIST_PATH)
         if (!file.exists()) {
-            file.createNewFile()
+            /* file.createNewFile() */
         }
-        mapper.writeValue(File(SAVED_ASSETNAME_LIST_PATH), assetsMapNames)
+        /* mapper.writeValue(File(SAVED_ASSETNAME_LIST_PATH), assetsMapNames) */
     }
 
     private fun getAssetsMapIDs(id: String): EtoroAssetFromJson? {
