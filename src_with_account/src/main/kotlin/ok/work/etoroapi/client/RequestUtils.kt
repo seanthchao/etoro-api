@@ -36,7 +36,6 @@ fun prepareRequest(path: String, auth: String, mode: TradingMode, credentials: E
             .header("sec-fetch-dest", "empty")
             .header("x-csrf-token", credentials.cToken)
             .header("x-sts-clienttime", dt)
-            .header("x-sts-deviceid", credentials.deviceid)
 }
 
 fun prepareOkRequest(path: String, auth: String, mode: TradingMode, credentials: EtoroMetadata): Request.Builder {

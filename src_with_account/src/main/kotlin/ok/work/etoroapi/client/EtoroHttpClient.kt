@@ -566,4 +566,30 @@ class EtoroHttpClient {
                 .getDouble("Credit")
     }
 
+    fun logout():Any {
+      var credentials = metadataService.getMetadata()
+      val driver = metadataService.getDriver()
+      val thisReq = "return JSON.stringify(await (await fetch(\"https://www.etoro.com/api/sts/v2/logout?client_request_id=${userContext.requestId}\", {\n" +
+              "  \"headers\": {\n" +
+              "    \"accept\": \"application/json, text/plain, */*\",\n" +
+              "    \"accept-language\": \"zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7\",\n" +
+              "    \"content-type\": \"application/json;charset=UTF-8\",\n" +
+              "    \"accounttype\": \"Demo\",\n" +
+              "    \"applicationidentifier\": \"ReToro\",\n" +
+              "    \"applicationversion\": \"384.0.1\",\n" +
+              "    \"authorization\": \"${credentials.token}\",\n" +
+              "    \"sec-fetch-dest\": \"empty\",\n" +
+              "    \"sec-fetch-mode\": \"cors\",\n" +
+              "    \"sec-fetch-site\": \"same-origin\",\n" +
+              "    \"x-csrf-token\": \"${credentials.cToken}\"\n" +
+              "  },\n" +
+              "  \"referrer\": \"https://www.etoro.com/watchlists\",\n" +
+              "  \"referrerPolicy\": \"no-referrer-when-downgrade\",\n" +
+              "  \"method\": \"POST\",\n" +
+              "  \"mode\": \"cors\",\n" +
+              "})));"
+      driver.executeScript(thisReq)
+      return "logged out"
+    }
+
 }

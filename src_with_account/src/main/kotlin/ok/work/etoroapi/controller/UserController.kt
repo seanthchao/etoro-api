@@ -26,4 +26,9 @@ class UserController {
         return client.getExpireTime().toString()
     }
 
+    @GetMapping(value = ["/logout"])
+    fun logout(): Any {
+        return client.logout()
+    }
+
 }
