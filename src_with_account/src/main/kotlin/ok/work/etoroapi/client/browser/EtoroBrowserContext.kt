@@ -130,7 +130,7 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
         Thread.sleep(5000) */
         /* driver.findElement(By.cssSelector("button[class='button-default blue-btn']")).click() */
         driver.executeScript("document.getElementsByClassName(\"button-default blue-btn\")[0].click()")
-        Thread.sleep(25000)
+        Thread.sleep(5000)
 
         /* driver.findElementByClassName("button-default.blue-btn").click() */
         /* driver.findElementByClassName("blue-btn").click() */
