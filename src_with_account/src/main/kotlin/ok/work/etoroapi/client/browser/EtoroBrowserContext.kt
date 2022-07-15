@@ -113,7 +113,7 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
 
 
         driver.get("$baseUrl/login")
-        Thread.sleep(5000)
+        Thread.sleep(2000)
         val email = System.getenv("LOGIN")
         val password = System.getenv("PASSWORD")
         if (email == null || password == null) {
@@ -131,6 +131,11 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
         /* driver.findElement(By.cssSelector("button[class='button-default blue-btn']")).click() */
         driver.executeScript("document.getElementsByClassName(\"button-default blue-btn\")[0].click()")
         Thread.sleep(5000)
+        while (driver.getCurrentUrl() == "https://www.etoro.com/login"){
+          Thread.sleep(1000)
+        }
+        /* println(driver.getCurrentUrl()) */
+
 
         /* driver.findElementByClassName("button-default.blue-btn").click() */
         /* driver.findElementByClassName("blue-btn").click() */
@@ -199,13 +204,13 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
         /* expirationTime -= Period.ofMinutes(59) */
         println("test expiretime: $expirationTime")
         /* var diffInMillies = */
-        if (Date().after(expirationTime)) {
+        /* if (Date().after(expirationTime)) {
             println("expired, logout...")
             logout()
             Thread.sleep(5000)
             println("login...")
             login()
-        }
+        } */
         return EtoroMetadata(
                 cookies,
                 token,
