@@ -22,6 +22,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.Month
 
+import kotlin.system.exitProcess
 
 data class EtoroMetadata(val cookies: String, val token: String, val cToken: String, val lsPassword: String, val baseUrl: String, val domain: String, val realCid: String, val demoCid: String, val expirationTime: Date, val deviceid: String)
 
@@ -86,6 +87,7 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
         println("Logout done.")
         println("Login....")
         login() */
+        /* exitProcess(0) */
     }
 
     fun getDriver(): ChromeDriver {
@@ -114,6 +116,8 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
 
         driver.get("$baseUrl/login")
         Thread.sleep(2000)
+        driver.get("$baseUrl/login")
+        Thread.sleep(2000)
         val email = System.getenv("LOGIN")
         val password = System.getenv("PASSWORD")
         if (email == null || password == null) {
@@ -126,16 +130,30 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
           un.sendKeys(email)
         }
         driver.findElementById("password").sendKeys(password)
-        /* driver.findElement(By.cssSelector("button[class='button-default blue-btn']")).click()
-        Thread.sleep(5000) */
+        // Click resend code for preventing delay sending.
+
         /* driver.findElement(By.cssSelector("button[class='button-default blue-btn']")).click() */
         driver.executeScript("document.getElementsByClassName(\"button-default blue-btn\")[0].click()")
+
+        Thread.sleep(30000)
+        /* Thread.sleep(5000) */
+        driver.executeScript("document.getElementsByClassName(\"et-link\")[0].click()")
+
+        /* driver.findElement(By.cssSelector("button[class='et-link']")).click() */
+
+        exitProcess(0)
+
+
+
+        /* driver.findElement(By.cssSelector("button[class='button-default blue-btn']")).click() */
+        /* driver.executeScript("document.getElementsByClassName(\"button-default blue-btn\")[0].click()")
         Thread.sleep(5000)
         while (driver.getCurrentUrl() == "https://www.etoro.com/login"){
           Thread.sleep(1000)
-        }
+        } */
         /* println(driver.getCurrentUrl()) */
 
+        Thread.sleep(5000)
 
         /* driver.findElementByClassName("button-default.blue-btn").click() */
         /* driver.findElementByClassName("blue-btn").click() */
