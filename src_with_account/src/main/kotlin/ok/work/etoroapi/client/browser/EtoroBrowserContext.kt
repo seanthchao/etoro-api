@@ -114,7 +114,7 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
         }
 
 
-        driver.get("$baseUrl/login")
+        /* driver.get("$baseUrl/login")
         Thread.sleep(2000)
         driver.get("$baseUrl/login")
         Thread.sleep(2000)
@@ -130,18 +130,12 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
           un.sendKeys(email)
         }
         driver.findElementById("password").sendKeys(password)
-        // Click resend code for preventing delay sending.
-
-        /* driver.findElement(By.cssSelector("button[class='button-default blue-btn']")).click() */
         driver.executeScript("document.getElementsByClassName(\"button-default blue-btn\")[0].click()")
 
         Thread.sleep(30000)
-        /* Thread.sleep(5000) */
         driver.executeScript("document.getElementsByClassName(\"et-link\")[0].click()")
 
-        /* driver.findElement(By.cssSelector("button[class='et-link']")).click() */
-
-        exitProcess(0)
+        exitProcess(0) */
 
 
 

@@ -503,6 +503,37 @@ class EtoroHttpClient {
         return transactionPool.getFromPool(transactionId) ?: Transaction(transactionId, null, null, null, null)
     }
 
+    fun updatePositionTP(positionRequestBody: EtoroPositionForUpdate, mode: TradingMode): Transaction {
+        val id = positionRequestBody.PositionID
+        var credentials = metadataService.getMetadata()
+        val driver = metadataService.getDriver()
+        val thisReq2 = "return JSON.stringify(await (await fetch(\"https://www.etoro.com/sapi/trade-${mode.name.toLowerCase()}/positions/${id}?client_request_id=${userContext.requestId}\", {\n" +
+                "  \"headers\": {\n" +
+                "    \"accept\": \"application/json, text/plain, */*\",\n" +
+                "    \"accept-language\": \"zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7\",\n" +
+                "    \"content-type\": \"application/json;charset=UTF-8\",\n" +
+                "    \"accounttype\": \"Demo\",\n" +
+                "    \"applicationidentifier\": \"ReToro\",\n" +
+                "    \"applicationversion\": \"384.0.1\",\n" +
+                "    \"authorization\": \"${credentials.token}\",\n" +
+                "    \"sec-fetch-dest\": \"empty\",\n" +
+                "    \"sec-fetch-mode\": \"cors\",\n" +
+                "    \"sec-fetch-site\": \"same-origin\",\n" +
+                "    \"x-csrf-token\": \"${credentials.cToken}\"\n" +
+                "  },\n" +
+                "  \"referrer\": \"https://www.etoro.com/watchlists\",\n" +
+                "  \"referrerPolicy\": \"no-referrer-when-downgrade\",\n" +
+                "  \"body\": \"{\\\"TakeProfitRate\\\":${positionRequestBody.TakeProfitRate},\\\"PositionID\\\":${id}}\",\n" +
+                "  \"method\": \"PUT\",\n" +
+                "  \"mode\": \"cors\",\n" +
+                "})).json());"
+        val body = driver.executeScript(thisReq2) as String
+        println("body(): $body")
+
+        val transactionId = JSONObject(body).getString("Token").toString()
+        return transactionPool.getFromPool(transactionId) ?: Transaction(transactionId, null, null, null, null)
+    }
+
     fun deletePosition(id: String, mode: TradingMode) {
         /* val req = prepareOkRequest(
                 "sapi/trade-${mode.name.toLowerCase()}/positions/$id?PositionID=$id&client_request_id=${userContext.requestId}",

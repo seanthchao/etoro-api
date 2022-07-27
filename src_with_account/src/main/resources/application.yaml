@@ -2,6 +2,6 @@ etoro:
   baseUrl: https://www.etoro.com
   domain: www.etoro.com
 server:
-  port: 8128
+  port: 8129
   servlet:
     context-path: /etoro-api

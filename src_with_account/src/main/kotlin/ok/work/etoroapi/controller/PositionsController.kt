@@ -67,6 +67,11 @@ class PositionsController {
         return httpClient.updatePosition(etoroPosition, ofString(mode))
     }
 
+    @PutMapping(value = ["/updateTP"])
+    fun updatePositionTP(@RequestBody etoroPosition: EtoroPositionForUpdate, @RequestHeader(defaultValue = "Demo") mode: String): Transaction {
+        return httpClient.updatePositionTP(etoroPosition, ofString(mode))
+    }
+
     @DeleteMapping(value = ["/close"])
     fun closePosition(id: String, @RequestHeader(defaultValue = "Demo") mode: String) {
         httpClient.deletePosition(id, ofString(mode))
