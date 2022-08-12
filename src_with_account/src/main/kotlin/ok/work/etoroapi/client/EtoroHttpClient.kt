@@ -147,6 +147,21 @@ class EtoroHttpClient {
         return cachedInstruments.toList()
     }
 
+    fun getPositionsSimple(mode: TradingMode): List<EtoroPosition> {
+        val response = JSONObject(browserHttpClient.fetchAccountData(mode.toString()))
+                .getJSONObject("AggregatedResult")
+                .getJSONObject("ApiResponses")
+                .getJSONObject("PrivatePortfolio")
+                .getJSONObject("Content")
+                .getJSONObject("ClientPortfolio")
+                .getJSONArray("Positions")
+                .toString()
+
+        val mapper = jacksonObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .configure(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES, false)
+        return mapper.readValue(response.toString())
+    }
+
     fun getPositions(mode: TradingMode): List<EtoroPosition> {
         val response = JSONObject(browserHttpClient.fetchAccountData(mode.toString()))
                 .getJSONObject("AggregatedResult")
@@ -182,6 +197,28 @@ class EtoroHttpClient {
                 it
             }
         }
+    }
+
+    fun getSLPercView(mode: TradingMode) {
+      val driver = metadataService.getDriver()
+      val thisReq2 = "return JSON.stringify(await (await fetch(\"https://etorologsapi.etoro.com/api/v2/monitoring?applicationIdentifier=ReToro\", {\n" +
+                    "  \"headers\": {\n" +
+                      "  \"accept\": \"*/*\",\n" +
+                      "  \"accept-language\": \"en-US,en;q=0.9\",\n" +
+                      "  \"content-type\": \"application/json\",\n" +
+                      "  \"sec-fetch-dest\": \"empty\",\n" +
+                      "  \"sec-fetch-mode\": \"cors\",\n" +
+                      "  \"sec-fetch-site\": \"same-site\",\n" +
+                      "  \"sec-gpc\": \"1\"\n" +
+                    "  },\n" +
+                    "  \"referrer\": \"https://www.etoro.com/\",\n" +
+                    "  \"referrerPolicy\": \"strict-origin-when-cross-origin\",\n" +
+                      "\"body\": \"{\\\"LogEvents\\\":[{\\\"Message\\\":\\\"UI Table Update Columns\\\",\\\"Categories\\\":\\\"Infra UI_Table\\\",\\\"Columns\\\":[\\\"amount\\\",\\\"unit\\\",\\\"open\\\",\\\"slPercent\\\",\\\"tp\\\",\\\"plDollars\\\",\\\"plPercentage\\\"],\\\"TableId\\\":\\\"portfolioBreakdown_positions\\\",\\\"Level\\\":\\\"info\\\",\\\"PushStatus\\\":true,\\\"IsLoggedIn\\\":true,\\\"CID\\\":11281986,\\\"Username\\\":\\\"seanthchao\\\",\\\"BatchIndex\\\":71,\\\"ApplicationIdentifier\\\":\\\"ReToro\\\",\\\"ApplicationVersion\\\":\\\"455.0.2\\\",\\\"SessionGuid\\\":\\\"d3d504a5-2541-4aa9-8a87-7b332f7870c9\\\",\\\"UserSessionGuid\\\":${userContext.requestId},\\\"LSSessionId\\\":\\\"S7d0f2fc56f34928cM67fT2611101\\\",\\\"ClientDateTime\\\":\\\"2022-08-01T11:41:18.269Z\\\",\\\"SecondsFromStartUp\\\":908}],\\\"MonitorEvents\\\":[]}\",\n" +
+                    "  \"method\": \"POST\",\n" +
+                    "  \"mode\": \"cors\",\n" +
+                    "  \"credentials\": \"omit\"\n" +
+                    "  })).json());"
+      val body = driver.executeScript(thisReq2) as String
     }
 
     fun getLoginData(mode: String): JSONObject {
