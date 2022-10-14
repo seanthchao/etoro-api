@@ -7,5 +7,5 @@
 port_base=8046
 port=$(expr $port_base + $1)
 echo $port
-podman run --name etoro_scraper_"$1" -p "$port":8130 --rm -it --cap-add SYS_ADMIN -e DISPLAY=:"$1" -v /tmp/.X11-unix:/tmp/.X11-unix -v brave_browser_home:/home/browser_"$1" --shm-size 1GB --tmpfs /tmp:size=20M etoro_scraper_"$1":latest &
+podman run --name etoro_trader_1 -p 8129:8130 --rm -it --cap-add SYS_ADMIN -e DISPLAY=:80 -v /tmp/.X11-unix:/tmp/.X11-unix -v brave_browser_home:/home/browser_trader_1 --shm-size 1GB --tmpfs /tmp:size=20M etoro_trader_1:latest &
 sleep 15

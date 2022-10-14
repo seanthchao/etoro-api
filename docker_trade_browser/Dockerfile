@@ -24,7 +24,7 @@ RUN apt-get update \
     && useradd --create-home ${SCRAPER_NAME}
 
 
-ARG BRAVE_BROWSER_PACKAGE_VERSION=1.38.115
+ARG BRAVE_BROWSER_PACKAGE_VERSION=1.44.108
 RUN apt-get update \
     && apt-cache policy brave-browser \
     && apt-get install --yes --no-install-recommends \
@@ -47,10 +47,10 @@ COPY /wrapper.sh /bin
 # CMD ["brave-browser", "--no-sandbox", "--incognito", "--remote-debugging-port=9224"]
 # CMD ["sleep", "5"]
 # WORKDIR /bin/runner
-
+RUN mkdir -p /drivers/ubuntu/brave
 COPY /libs/etoro-api-0.1.4.8130.jar /bin/runner/run.jar
-COPY /drivers/chromedriver_8130 /bin
-RUN ["chmod", "+x", "/bin/chromedriver_8130"]
+COPY /drivers/chromedriver_106 /drivers/ubuntu/brave/chromedriver_101
+RUN ["chmod", "+x", "/drivers/ubuntu/brave/chromedriver_101"]
 RUN ["chmod", "+x", "/bin/wrapper.sh"]
 # USER browser_5
 # VOLUME /home/browser_5

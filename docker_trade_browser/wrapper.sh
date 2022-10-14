@@ -12,7 +12,7 @@ set -m
 # ls -altr /home/browser
 # pwd
 java -jar /bin/runner/run.jar &
-brave-browser --remote-debugging-port=9224 --incognito https://www.etoro.com/login
+brave-browser --remote-debugging-port=9222 -tor https://www.etoro.com/login
 
 
 
