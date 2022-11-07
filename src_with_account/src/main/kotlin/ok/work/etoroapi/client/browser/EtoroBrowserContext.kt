@@ -55,7 +55,7 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
                 "drivers/windows/chromedriver.exe"
             }
             else -> {
-              "drivers/ubuntu/brave/chromedriver_101"
+              "drivers/ubuntu/brave/chromedriver_9223"
               /* "/bin/chromedriver_${port}" */
                 /* "drivers/ubuntu/chromedriver" */
             }
@@ -63,7 +63,7 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
         var prefs = HashMap<String, Int>()
         opts = ChromeOptions()
         System.setProperty("webdriver.chrome.driver", pathToDriver)
-        opts.setExperimentalOption("debuggerAddress", "127.0.0.1:9222")
+        opts.setExperimentalOption("debuggerAddress", "127.0.0.1:9223")
         /* opts.addArguments("start-maximized") */
         /* opts.addArguments("--no-sandbox")
         opts.addArguments("--disable-dev-shm-usage")
@@ -114,7 +114,7 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
         }
 
 
-        /* driver.get("$baseUrl/login")
+        driver.get("$baseUrl/login")
         Thread.sleep(2000)
         driver.get("$baseUrl/login")
         Thread.sleep(2000)
@@ -132,25 +132,16 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
         driver.findElementById("password").sendKeys(password)
         driver.executeScript("document.getElementsByClassName(\"button-default blue-btn\")[0].click()")
 
-        Thread.sleep(30000)
+        Thread.sleep(10000)
         driver.executeScript("document.getElementsByClassName(\"et-link\")[0].click()")
 
-        exitProcess(0) */
+        exitProcess(0)
 
 
 
-        /* driver.findElement(By.cssSelector("button[class='button-default blue-btn']")).click() */
-        /* driver.executeScript("document.getElementsByClassName(\"button-default blue-btn\")[0].click()")
-        Thread.sleep(5000)
-        while (driver.getCurrentUrl() == "https://www.etoro.com/login"){
-          Thread.sleep(1000)
-        } */
-        /* println(driver.getCurrentUrl()) */
 
-        Thread.sleep(5000)
+        /* Thread.sleep(5000)
 
-        /* driver.findElementByClassName("button-default.blue-btn").click() */
-        /* driver.findElementByClassName("blue-btn").click() */
         var seconds = 0
         while (true) {
             try {
@@ -172,14 +163,9 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
             }
         }
         expirationTime = Date(driver.executeScript("return JSON.parse(atob(window.localStorage.loginData)).stsData_app_1.expirationUnixTimeMs;") as Long)
-        /* println(token) */
         println("expires at: $expirationTime")
         val cookiesSet = driver.manage().cookies
-        cookies = cookiesSet.toList().joinToString("; ") { cookie -> "${cookie.name}=${cookie.value}" }
-        /* println("cookies: $cookies") */
-        /* println("cToken: $cToken") */
-
-        //driver.quit()
+        cookies = cookiesSet.toList().joinToString("; ") { cookie -> "${cookie.name}=${cookie.value}" } */
     }
 
     fun logout() {

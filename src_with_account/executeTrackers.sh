@@ -1,7 +1,5 @@
 export PASSWORD=H9P7Ci6m2qUsPYN
 export LOGIN=seanthchao
-# export PASSWORD=Jojoyy277
-# export LOGIN=Choliling
 for i in $(seq $1 $2)
 do
     echo "$i"
