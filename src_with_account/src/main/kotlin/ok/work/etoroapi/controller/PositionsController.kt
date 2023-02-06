@@ -87,4 +87,9 @@ class PositionsController {
         httpClient.deletePosition(id, ofString(mode))
     }
 
+    @DeleteMapping(value = ["/closeBulk"])
+    fun closePositionBulk(@RequestBody ids: List<String>, @RequestHeader(defaultValue = "Demo") mode: String) {
+        httpClient.deleteBulkPosition(ids, ofString(mode))
+    }
+
 }

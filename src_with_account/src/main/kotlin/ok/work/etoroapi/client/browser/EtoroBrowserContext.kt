@@ -140,7 +140,7 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
 
 
 
-        /* Thread.sleep(5000)
+        /* Thread.sleep(15000)
 
         var seconds = 0
         while (true) {
