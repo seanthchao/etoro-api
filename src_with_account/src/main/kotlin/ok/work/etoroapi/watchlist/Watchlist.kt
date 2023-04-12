@@ -50,7 +50,7 @@ class Watchlist {
     @Autowired
     lateinit var lightStreamerClient: EtoroLightStreamerClient
 
-    val SAVED_LIST_PATH = "watchlist.json"
+    val SAVED_LIST_PATH = "watchlist1.json"
     val SAVED_ASSETID_LIST_PATH = "assets_map_IDs.json"
     val SAVED_ASSETNAME_LIST_PATH = "assets_map_names.json"
 

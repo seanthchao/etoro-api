@@ -55,7 +55,7 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
                 "drivers/windows/chromedriver.exe"
             }
             else -> {
-              "drivers/ubuntu/brave/chromedriver_9223"
+              "drivers/ubuntu/brave/chromedriver_9222"
               /* "/bin/chromedriver_${port}" */
                 /* "drivers/ubuntu/chromedriver" */
             }
@@ -63,7 +63,7 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
         var prefs = HashMap<String, Int>()
         opts = ChromeOptions()
         System.setProperty("webdriver.chrome.driver", pathToDriver)
-        opts.setExperimentalOption("debuggerAddress", "127.0.0.1:9223")
+        opts.setExperimentalOption("debuggerAddress", "127.0.0.1:9222")
         /* opts.addArguments("start-maximized") */
         /* opts.addArguments("--no-sandbox")
         opts.addArguments("--disable-dev-shm-usage")
@@ -114,7 +114,7 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
         }
 
 
-        driver.get("$baseUrl/login")
+        /* driver.get("$baseUrl/login")
         Thread.sleep(2000)
         driver.get("$baseUrl/login")
         Thread.sleep(2000)
@@ -132,15 +132,8 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
         driver.findElementById("password").sendKeys(password)
         driver.executeScript("document.getElementsByClassName(\"button-default blue-btn\")[0].click()")
 
-        Thread.sleep(10000)
-        driver.executeScript("document.getElementsByClassName(\"et-link\")[0].click()")
-
-        exitProcess(0)
-
-
-
-
-        /* Thread.sleep(15000)
+        println("waiting 2fa...")
+        Thread.sleep(10000) */
 
         var seconds = 0
         while (true) {
@@ -165,7 +158,7 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
         expirationTime = Date(driver.executeScript("return JSON.parse(atob(window.localStorage.loginData)).stsData_app_1.expirationUnixTimeMs;") as Long)
         println("expires at: $expirationTime")
         val cookiesSet = driver.manage().cookies
-        cookies = cookiesSet.toList().joinToString("; ") { cookie -> "${cookie.name}=${cookie.value}" } */
+        cookies = cookiesSet.toList().joinToString("; ") { cookie -> "${cookie.name}=${cookie.value}" }
     }
 
     fun logout() {

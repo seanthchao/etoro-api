@@ -452,6 +452,7 @@ class EtoroHttpClient {
                         price - (price * position.takeProfitRate / 100)
                 position.takeProfit > 0.0 -> position.takeProfitRate = position.takeProfit
                 else -> {
+                    /* position.takeProfitRate = price - 0.001 */
                     position.takeProfitRate = price - (price * 50 / 100)
                 }
             }
@@ -463,6 +464,7 @@ class EtoroHttpClient {
                 position.stopLoss > 0.0 -> position.stopLossRate = position.stopLoss
                 else -> {
                     val maxSL = assetInfo.getInt("MaxStopLossPercentage")
+                    /* position.stopLossRate = price */
                     position.stopLossRate = price - (price * maxSL / 100)
                 }
             }
@@ -473,13 +475,14 @@ class EtoroHttpClient {
                         price + (price * position.takeProfitRate / 100)
                 position.takeProfit > 0.0 -> position.takeProfitRate = position.takeProfit
                 else -> {
+                    /* position.takeProfitRate = price + 0.001 */
                     position.takeProfitRate = price + (price * 50 / 100)
                 }
-            }
 
+            }
         }
-        position.takeProfitRate = position.takeProfitRate.round(2)
-        position.stopLossRate = position.stopLossRate.round(2)
+        position.takeProfitRate = position.takeProfitRate.round(3)
+        position.stopLossRate = position.stopLossRate.round(3)
         var credentials = metadataService.getMetadata()
         val driver = metadataService.getDriver()
         val thisReq2 = "return JSON.stringify(await (await fetch(\"https://www.etoro.com/sapi/trade-${mode.name.toLowerCase()}/${order_type}?client_request_id=${userContext.requestId}\", {\n" +
