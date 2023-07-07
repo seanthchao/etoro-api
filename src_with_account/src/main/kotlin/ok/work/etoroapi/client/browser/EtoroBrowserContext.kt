@@ -55,7 +55,7 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
                 "drivers/windows/chromedriver.exe"
             }
             else -> {
-              "drivers/ubuntu/brave/chromedriver_9222"
+              "drivers/ubuntu/brave/chromedriver_9223"
               /* "/bin/chromedriver_${port}" */
                 /* "drivers/ubuntu/chromedriver" */
             }
@@ -63,7 +63,7 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
         var prefs = HashMap<String, Int>()
         opts = ChromeOptions()
         System.setProperty("webdriver.chrome.driver", pathToDriver)
-        opts.setExperimentalOption("debuggerAddress", "127.0.0.1:9222")
+        opts.setExperimentalOption("debuggerAddress", "127.0.0.1:9223")
         /* opts.addArguments("start-maximized") */
         /* opts.addArguments("--no-sandbox")
         opts.addArguments("--disable-dev-shm-usage")

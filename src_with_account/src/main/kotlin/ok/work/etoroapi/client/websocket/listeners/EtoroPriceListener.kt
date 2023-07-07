@@ -42,10 +42,9 @@ class EtoroPriceListener : EtoroListener() {
             val log = StringBuilder()
             var update = HashMap<String, String>()
             for (i in 1..subscriptionFields.size) {
-              if (i == 1 || i == 9 || i == 16 || i == 17){
+            /* if (i == 1 || i == 9 || i == 16 || i == 17){ */
                 update.put(subscriptionFields[i-1], itemUpdate.getValue(i))
                 log.append("${itemUpdate.getValue(i)} | ")
-              }
             }
             println(log.toString())
             /* if (itemUpdate.getValue(16) == itemUpdate.getValue(17)){
