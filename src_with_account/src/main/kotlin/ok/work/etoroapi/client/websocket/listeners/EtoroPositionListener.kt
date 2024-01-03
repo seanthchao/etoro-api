@@ -45,11 +45,12 @@ class EtoroPositionListener : EtoroListener() {
             val transaction = Transaction(requestToken, position, 0, null, LocalDateTime.now())
             transactionPool.addToPool(transaction)
             simpMessagingTemplate.convertAndSend("/api/positions", transaction)
-        } else {
+        }
+        /* else {
             val transaction = Transaction(requestToken, null, 0, null, LocalDateTime.now())
             transactionPool.addToPool(transaction)
             simpMessagingTemplate.convertAndSend("/api/positions", transaction)
-        }
+        } */
 
     }
 }

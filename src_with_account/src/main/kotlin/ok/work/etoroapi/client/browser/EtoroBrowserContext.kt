@@ -21,6 +21,8 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.Month
+import java.io.File
+import java.io.IOException
 
 import kotlin.system.exitProcess
 
@@ -55,7 +57,7 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
                 "drivers/windows/chromedriver.exe"
             }
             else -> {
-              "drivers/ubuntu/brave/chromedriver_9222"
+              "drivers/ubuntu/brave/chromedriver_9223"
               /* "/bin/chromedriver_${port}" */
                 /* "drivers/ubuntu/chromedriver" */
             }
@@ -63,7 +65,7 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
         var prefs = HashMap<String, Int>()
         opts = ChromeOptions()
         System.setProperty("webdriver.chrome.driver", pathToDriver)
-        opts.setExperimentalOption("debuggerAddress", "127.0.0.1:9222")
+        opts.setExperimentalOption("debuggerAddress", "127.0.0.1:9224")
         /* opts.addArguments("start-maximized") */
         /* opts.addArguments("--no-sandbox")
         opts.addArguments("--disable-dev-shm-usage")
@@ -115,14 +117,16 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
 
 
         /* driver.get("$baseUrl/login")
+        Thread.sleep(2000) */
+        /* driver.get("$baseUrl/login") */
         Thread.sleep(2000)
-        driver.get("$baseUrl/login")
-        Thread.sleep(2000)
-        val email = System.getenv("LOGIN")
-        val password = System.getenv("PASSWORD")
-        if (email == null || password == null) {
+        /* val email = "System.getenv("LOGIN")"
+        val password = System.getenv("PASSWORD") */
+        val email = "rmlu8757"
+        val password = "U4ru04xu06"
+        /* if (email == null || password == null) {
             throw RuntimeException("LOGIN and/or PASSWORD environment variables are missing")
-        }
+        } */
 
         if (deviceExsist == "0"){
           var un = driver.findElementById("username")
@@ -132,13 +136,15 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
         driver.findElementById("password").sendKeys(password)
         driver.executeScript("document.getElementsByClassName(\"button-default blue-btn\")[0].click()")
 
-        println("waiting 2fa...")
+        /* println("waiting 2fa...")
         Thread.sleep(10000) */
 
         var seconds = 0
+        val fileName = "token.txt"
         while (true) {
             try {
                 token = driver.executeScript("return JSON.parse(atob(window.localStorage.loginData)).stsData_app_1.accessToken;") as String
+                appendToFile(fileName, token.toString())
                 cToken = (driver.executeScript("return window.localStorage.cToken") as String).replace("\"", "")
                 realCid = driver.executeScript("return JSON.parse(atob(window.localStorage.loginData)).authenticationData.realCid;").toString()
                 demoCid = driver.executeScript("return JSON.parse(atob(window.localStorage.loginData)).authenticationData.demoCid;").toString()
@@ -184,6 +190,17 @@ class EtoroMetadataService(@Value("\${etoro.baseUrl}") val baseUrl: String, @Val
               "})));"
       driver.executeScript(thisReq)
       /* println("body(): $body") */
+    }
+
+    @Throws(IOException::class)
+    fun appendToFile(filePath: String, content: String) {
+        val file = File(filePath)
+
+        if (!file.exists()) {
+            file.createNewFile()
+        }
+
+        file.appendText("\n$content")
     }
 
     fun getMetadata(): EtoroMetadata {

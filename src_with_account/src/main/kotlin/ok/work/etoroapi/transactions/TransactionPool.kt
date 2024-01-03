@@ -21,7 +21,10 @@ class TransactionPool {
     private var transactionsPool: MutableMap<String, Transaction> = mutableMapOf()
 
     fun addToPool(transaction: Transaction) {
-        transactionsPool[transaction.RequestToken] = transaction
+        if (transaction.Position != null) {
+          transactionsPool[transaction.RequestToken] = transaction
+        }
+
     }
 
     fun getFromPool(id: String): Transaction? {
@@ -66,5 +69,3 @@ class TransactionPool {
         toRemove.forEach { p -> transactionsPool.remove(p.key) }
     }
 }
-
-

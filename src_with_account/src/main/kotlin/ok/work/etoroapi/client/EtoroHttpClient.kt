@@ -139,6 +139,8 @@ class EtoroHttpClient {
                         id,
                         item.getString("SymbolFull"),
                         item.getString("InstrumentDisplayName"),
+                        item.getInt("InstrumentTypeID"),
+                        item.getBoolean("IsInternalInstrument"),
                         imageList.toList()
                 )
                 cachedInstruments.add(asset)
@@ -446,8 +448,9 @@ class EtoroHttpClient {
             }
 
             when {
-                position.takeProfitAmountRate > 0.0 -> position.takeProfitRate =
-                        price - (price * position.takeProfitAmountRate / 100) / position.leverage
+                /* position.takeProfitAmountRate > 0.0 -> position.takeProfitRate =
+                        price - (price * position.takeProfitAmountRate / 100) / position.leverage */
+                position.takeProfitAmountRate > 0.0 -> position.takeProfitRate = price + position.takeProfitAmountRate
                 position.takeProfitRate > 0.0 -> position.takeProfitRate =
                         price - (price * position.takeProfitRate / 100)
                 position.takeProfit > 0.0 -> position.takeProfitRate = position.takeProfit
@@ -469,8 +472,9 @@ class EtoroHttpClient {
                 }
             }
             when {
-                position.takeProfitAmountRate > 0.0 -> position.takeProfitRate =
-                        price + (price * position.takeProfitAmountRate / 100) / position.leverage
+                /* position.takeProfitAmountRate > 0.0 -> position.takeProfitRate =
+                        price + (price * position.takeProfitAmountRate / 100) / position.leverage */
+                position.takeProfitAmountRate > 0.0 -> position.takeProfitRate = price + position.takeProfitAmountRate
                 position.takeProfitRate > 0.0 -> position.takeProfitRate =
                         price + (price * position.takeProfitRate / 100)
                 position.takeProfit > 0.0 -> position.takeProfitRate = position.takeProfit
@@ -490,9 +494,9 @@ class EtoroHttpClient {
                 "    \"accept\": \"application/json, text/plain, */*\",\n" +
                 "    \"accept-language\": \"zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7\",\n" +
                 "    \"content-type\": \"application/json;charset=UTF-8\",\n" +
-                "    \"accounttype\": \"Demo\",\n" +
+                "    \"accounttype\": \"${mode.name.toLowerCase()}\",\n" +
                 "    \"applicationidentifier\": \"ReToro\",\n" +
-                "    \"applicationversion\": \"384.0.1\",\n" +
+                "    \"applicationversion\": \"606.0.1\",\n" +
                 "    \"authorization\": \"${credentials.token}\",\n" +
                 "    \"sec-fetch-dest\": \"empty\",\n" +
                 "    \"sec-fetch-mode\": \"cors\",\n" +
@@ -501,14 +505,17 @@ class EtoroHttpClient {
                 "  },\n" +
                 "  \"referrer\": \"https://www.etoro.com/watchlists\",\n" +
                 "  \"referrerPolicy\": \"no-referrer-when-downgrade\",\n" +
-                "  \"body\": \"{\\\"InstrumentID\\\":${instrumentId},\\\"IsBuy\\\":${type},\\\"Leverage\\\":${position.leverage},\\\"TakeProfitPercentage\\\":1000,\\\"StopLossPercentage\\\":99,\\\"StopLossRate\\\":${position.stopLossRate},\\\"TakeProfitRate\\\":${position.takeProfitRate},\\\"IsTslEnabled\\\":${position.tsl},\\\"View_MaxPositionUnits\\\":20,\\\"IsDiscounted\\\":false,\\\"Amount\\\":${position.amount},\\\"ViewRateContext\\\":{\\\"ClientViewRate\\\":${price}}}\",\n" +
+                "  \"body\": \"{\\\"InstrumentID\\\":${instrumentId},\\\"IsBuy\\\":${type},\\\"Leverage\\\":${position.leverage},\\\"IsTslEnabled\\\":${position.tsl},\\\"View_MaxPositionUnits\\\":20,\\\"IsDiscounted\\\":false,\\\"Amount\\\":${position.amount},\\\"ViewRateContext\\\":{\\\"ClientViewRate\\\":${price}}}\",\n" +
                 "  \"method\": \"POST\",\n" +
                 "  \"mode\": \"cors\",\n" +
                 "})).json());"
         val body = driver.executeScript(thisReq2) as String
         println("body(): $body")
+        /* Thread.sleep(1500) */
 
         val transactionId = JSONObject(body)["Token"].toString()
+        /* println("transactionId(): $transactionId") */
+        /* println(transactionId) */
         return transactionPool.getFromPool(transactionId) ?: Transaction(transactionId, null, null, null, null)
     }
 

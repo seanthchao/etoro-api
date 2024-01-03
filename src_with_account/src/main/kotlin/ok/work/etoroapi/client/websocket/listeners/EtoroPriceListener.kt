@@ -11,6 +11,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.io.File
 import java.io.IOException
+import java.text.DecimalFormat
 
 
 
@@ -38,13 +39,25 @@ class EtoroPriceListener : EtoroListener() {
             watchlist.updateMarketStatus(id, itemUpdate.getValue(4)!!.toBoolean())
 
             watchlist.updateDiscounted(id, itemUpdate.getValue(16)!!.toDouble(), itemUpdate.getValue(17)!!.toDouble())
+            watchlist.updatePriceRateID(id, itemUpdate.getValue(11)!!.toString())
 
             val log = StringBuilder()
+            var discounted_price = 0.0
             var update = HashMap<String, String>()
+            val df = DecimalFormat("#.#####")
             for (i in 1..subscriptionFields.size) {
-            /* if (i == 1 || i == 9 || i == 16 || i == 17){ */
+            /* if (i == 1 || i == 5 || i == 6 || i == 16 || i == 17 || i == 18 || i == 19){ */
                 update.put(subscriptionFields[i-1], itemUpdate.getValue(i))
+              /* } */
+              if (i == 1 ||i == 9 ||i == 16 || i == 17){
                 log.append("${itemUpdate.getValue(i)} | ")
+              }
+              if (i == 18 || i == 19){
+                discounted_price = itemUpdate.getValue(i)!!.toDouble()/itemUpdate.getValue(i-13)!!.toDouble()
+                discounted_price = df.format(discounted_price).toDouble()
+              log.append("${discounted_price} | ")
+            }
+
             }
             println(log.toString())
             /* if (itemUpdate.getValue(16) == itemUpdate.getValue(17)){
@@ -54,7 +67,7 @@ class EtoroPriceListener : EtoroListener() {
               val dt = formatted.split(".")[0]
               log.append("$dt | ")
 
-              val fileName = "possible_assets.txt"
+              val fileName = "target_assets_1101.txt"
 
               try {
                   appendToFile(fileName, log.toString())

@@ -24,13 +24,13 @@ data class EtoroAssetFromJson(val instrumentID: String, val symbolFull: String, 
         return symbolFull
     }
 }
-data class EtoroFullAsset(val InstrumentID: String, val SymbolFull: String, val InstrumentDisplayName: String, val images: List<Image>) {
+data class EtoroFullAsset(val InstrumentID: String, val SymbolFull: String, val InstrumentDisplayName: String, val InstrumentTypeID: Int, val IsInternalInstrument: Boolean?, val images: List<Image>) {
     override fun toString(): String {
         return SymbolFull
     }
 }
 
-data class Asset(val id: String, val name: String, val fullName: String, var buy: Double?, var sell: Double?, var marketOpen: Boolean?, var askDiscounted: Double, var bidDiscounted: Double)
+data class Asset(val id: String, val name: String, val fullName: String, var buy: Double?, var sell: Double?, var marketOpen: Boolean?, var askDiscounted: Double, var bidDiscounted: Double, var priceRateID: String)
 
 data class Image(val Width: Int, val Height: Int, val Uri: String)
 
@@ -50,7 +50,7 @@ class Watchlist {
     @Autowired
     lateinit var lightStreamerClient: EtoroLightStreamerClient
 
-    val SAVED_LIST_PATH = "watchlist1.json"
+    val SAVED_LIST_PATH = "watchlist_3.json"
     val SAVED_ASSETID_LIST_PATH = "assets_map_IDs.json"
     val SAVED_ASSETNAME_LIST_PATH = "assets_map_names.json"
 
@@ -87,7 +87,7 @@ class Watchlist {
         /* val asset = assetsMapIDs[id] */
         if (asset != null) {
             lightStreamerClient.subscribeById(asset.instrumentID)
-            watchlist[id] = Asset(asset.instrumentID, asset.symbolFull, asset.instrumentDisplayName, null, null, null, 0.0, 0.0)
+            watchlist[id] = Asset(asset.instrumentID, asset.symbolFull, asset.instrumentDisplayName, null, null, null, 0.0, 0.0, "")
             saveToFile()
             return watchlist
         } else {
@@ -100,7 +100,7 @@ class Watchlist {
         val asset = getAssetsMapNames(name.toLowerCase())
         if (asset != null) {
             lightStreamerClient.subscribeById(asset.instrumentID)
-            watchlist[asset.instrumentID] = Asset(asset.instrumentID, asset.symbolFull.toLowerCase(), asset.instrumentDisplayName, null, null, null, 0.0, 0.0)
+            watchlist[asset.instrumentID] = Asset(asset.instrumentID, asset.symbolFull.toLowerCase(), asset.instrumentDisplayName, null, null, null, 0.0, 0.0, "")
             saveToFile()
             return watchlist
         } else {
@@ -176,12 +176,18 @@ class Watchlist {
         watchlist[id]?.sell = sell?.toDouble()
     }
 
+    fun updatePriceRateID(id: String, priceRateID: String) {
+        watchlist[id]?.priceRateID = priceRateID?.toString()
+    }
+
+    /* fun getPrice_ID(id: String, type: PositionType) */
+
     fun getPrice(id: String, type: PositionType, discounted: Boolean): Double {
         val asset = watchlist[id]
-        print("wlist")
+        /* print("wlist")
         println(watchlist)
         print("asset")
-        println(asset)
+        println(asset) */
         if (asset != null) {
             if (type == PositionType.BUY && asset.buy != null) {
                 if (discounted) return asset.askDiscounted
@@ -219,7 +225,7 @@ class Watchlist {
         saveToFile()
     }
 
-    fun  removeByName(name: String) {
+    fun removeByName(name: String) {
         val id = getAssetsMapNames(name.toLowerCase())?.instrumentID !!
         removeById(id)
     }
